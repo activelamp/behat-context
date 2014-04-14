@@ -391,6 +391,20 @@ class DrupalServiceAPIContext extends DrupalContext
     }
 
     /**
+     * @Given /^property "([^"]*)" all should be "([^"]*)"$/
+     */
+    public function propertyAllShouldBe($property_string, $value)
+    {
+        $value = $this->getValue($value);
+        $property_values = $this->getAllProperty(explode('/', $property_string), $this->apiResponseArray);
+
+        foreach($property_values as $property_value) {
+            if ($property_value != $value)
+                throw new \Exception("Wrong value. Wanted {$value} but got {$property_value}");
+        }
+    }
+
+    /**
      * @Then /^property "([^"]*)" all should be of type "([^"]*)"$/
      *
      * If no matching properties exist this method will return success. Only
